@@ -130,8 +130,9 @@ public abstract class AbstractBatcher implements Batcher {
           counts.clear();
           localCallCounter.set(0);
         }
-
-        void add(Count count) {
+        //since when doing copyAndClear, it synchronized the Batch instance. 
+        //to synchronize the method, to avoid the ConcurrentModifyException.
+        synchronized void add(Count count) {
             opCount.incrementAndGet();
             localCallCounter.incrementAndGet();
             Count found = counts.get(count.getCounterName());
